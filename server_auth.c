@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include "index.txt"
 
 // Função para verificar as credenciais de autenticação
 int check_authentication(char *authorization) {
@@ -43,9 +44,8 @@ void handle_request(int client_socket) {
         // Credenciais corretas - responda com o conteúdo HTML
         char content[] = "HTTP/1.1 200 OK\r\n"
                          "Content-Type: text/html\r\n"
-                         "Content-Length: 26\r\n"
                          "\r\n"
-                         "<html><body>Hello, World! </body></html>";
+                         "<html><body> <h1>R700 configuration </h1> <form><label>Serial:</label><input type=\"text\"value=\"Lucas\"> </form> </body></html>";
         write(client_socket, content, sizeof(content) - 1);
     } else {
         // Credenciais incorretas - responda com um erro de autenticação
@@ -71,7 +71,7 @@ int main() {
 
     // Configure o endereço do servidor
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(8776);
+    server_addr.sin_port = htons(8797);
     server_addr.sin_addr.s_addr = INADDR_ANY;
 
     // Vincule o socket ao endereço do servidor
