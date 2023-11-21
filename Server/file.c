@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #define FILENAME "index.txt" // Nome do arquivo para download
-#define SERVER_PORT 8765                    // Porta do servidor
+#define SERVER_PORT 8765      // Porta do servidor
 
 int main() {
     int server_socket, client_socket;
@@ -37,21 +37,21 @@ int main() {
     if (bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address)) == -1) {
         perror("Erro ao vincular o socket do servidor");
         fclose(file);
-        pclose(server_socket);
+        close(server_socket);
         exit(EXIT_FAILURE);
     }
 
     // Ouça por conexões
-    if (listen(server_socket, 5) == -1) {
+    if (listen(server_socket, 1) == -1) {
         perror("Erro ao ouvir por conexões");
         fclose(file);
-        pclose(server_socket);
+        close(server_socket);
         exit(EXIT_FAILURE);
     }
 
     printf("Aguardando conexões...\n");
 
-    while (1) {
+    while (listen(server_socket, 1) != -1) {
         socklen_t client_address_len = sizeof(client_address);
 
         // Aceitar a conexão do cliente
@@ -78,13 +78,13 @@ int main() {
         printf("Arquivo enviado para o cliente\n");
 
         // Fechar o socket do cliente
-        //pclose(client_socket);
-        printf("Conexão com o cliente encerrada\n");
+        close(client_socket);
     }
 
     // Fechar o arquivo e o socket do servidor (isso normalmente não será alcançado)
     fclose(file);
-    pclose(server_socket);
+    close(server_socket);
+    printf("Servidor encerrado\n");
 
     return 0;
 }

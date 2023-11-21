@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include "index.txt"
 
 // Função para verificar as credenciais de autenticação
 int check_authentication(char *authorization) {
