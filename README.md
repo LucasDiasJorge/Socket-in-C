@@ -35,3 +35,5 @@ int socket(int domain, int type, int protocol);
 - `type`: Este argumento especifica o tipo de socket que você deseja criar. Os tipos comuns incluem `SOCK_STREAM` para sockets TCP (que fornecem uma comunicação confiável e orientada a conexões) e `SOCK_DGRAM` para sockets UDP (que fornecem comunicação não confiável e sem conexão).
 
 - `protocol`: Este argumento especifica o protocolo a ser usado com o socket. Normalmente, você pode usar `0` para que o sistema operacional escolha o protocolo apropriado com base no domínio e no tipo. No entanto, em algumas situações específicas, você pode especificar um protocolo, como `IPPROTO_TCP` para sockets TCP ou `IPPROTO_UDP` para sockets UDP.
+
+https://www.geeksforgeeks.org/socket-programming-cc/
