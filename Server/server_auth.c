@@ -19,7 +19,7 @@ int check_authentication(char *authorization) {
     }
 }
 
-// Função para responder a uma solicitação HTTP com autenticação básica
+
 void handle_request(int client_socket) {
     char request[1024];
     char response[1024];
@@ -36,16 +36,26 @@ void handle_request(int client_socket) {
         sscanf(auth_start, "Authorization: Basic %s", authorization);
     }
 
-    printf("Authorization: %s\n", authorization);
-
     // Verifique as credenciais de autenticação
     if (check_authentication(authorization)) {
-        // Credenciais corretas - responda com o conteúdo HTML
+        // Credenciais corretas - responda com o conteúdo HTML e imprima os parâmetros
         char content[] = "HTTP/1.1 200 OK\r\n"
                          "Content-Type: text/html\r\n"
                          "\r\n"
                          "<html><body> <h1>R700 configuration </h1> <form><label>Serial:</label><input type=\"text\"value=\"Lucas\"> </form> </body></html>";
         write(client_socket, content, sizeof(content) - 1);
+        
+        // Procurar pela string POST no request
+        char *post_start = strstr(request, "POST / HTTP/1.1");
+        if (post_start) {
+            // Se for uma solicitação POST
+            char *body_start = strstr(request, "\r\n\r\n");
+            if (body_start) {
+                // Encontrar o início do corpo da solicitação
+                char *body = body_start + 4; // Avançar além do \r\n\r\n
+                printf("Body: %s\n", body); // Imprimir o corpo da solicitação
+            }
+        }
     } else {
         // Credenciais incorretas - responda com um erro de autenticação
         char auth_error[] = "HTTP/1.1 401 Unauthorized\r\n"
@@ -53,7 +63,6 @@ void handle_request(int client_socket) {
                             "Content-Length: 0\r\n\r\n";
         write(client_socket, auth_error, sizeof(auth_error) - 1);
     }
-
 }
 
 int main() {
